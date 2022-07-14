@@ -38,6 +38,14 @@ class NewsOut(BaseModel):
     sport_id: int = Field(None)
 
 
+class BroadcastOut(BaseModel):
+    broadcast_id: int = Field(None)
+    title: str = Field(None)
+    description: str = Field(None)
+    preview: str = Field(None)
+    link: str = Field(None)
+
+
 class UserComplex(BaseModel):
     user: UserOut = Field(None, description='Участник')
     teams: list[TeamOut] = Field(None, description='Команды, в которых состоит участник')
