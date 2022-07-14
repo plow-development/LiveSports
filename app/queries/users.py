@@ -9,7 +9,7 @@ from app.services.database import DataBase
 
 
 async def add_user(username: str, hashed_password: str, email: str, image: UploadFile,
-                   firstname: str, lastname: str, birthday: date, type_: str, money: int) -> None:
+                   firstname: str, lastname: str, birthday: date, money: int) -> None:
     """
     Создаёт пользователя в базе данных
 
@@ -20,11 +20,10 @@ async def add_user(username: str, hashed_password: str, email: str, image: Uploa
     :param firstname: Имя пользователя
     :param lastname: Фамилия пользователя
     :param birthday: День Рожденья пользователя
-    :param type_: Тип пользователя (TODO)
     :param money: Баланс пользователя (в баллах)
     """
-    sql = """INSERT INTO users(username, hashed_password, email, avatar, firstname, lastname, birthday, type, money)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    sql = """INSERT INTO users(username, hashed_password, email, avatar, firstname, lastname, birthday, money)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
              """
     if image:
         image_data = image.file.read()
@@ -36,7 +35,7 @@ async def add_user(username: str, hashed_password: str, email: str, image: Uploa
         image_name = None
     try:
         await DataBase.execute(
-            sql, username, hashed_password, email, image_name, firstname, lastname, birthday, type_, money)
+            sql, username, hashed_password, email, image_name, firstname, lastname, birthday, money)
     except asyncpg.UniqueViolationError as e:
         raise BadRequest("Пользователь уже существует!") from e
 
@@ -44,12 +43,11 @@ async def add_user(username: str, hashed_password: str, email: str, image: Uploa
 async def get_user(username: str) -> asyncpg.Record:
     """
     Возвращает данные о пользователе:
-    username, hashed_password, email, avatar, firstname, lastname, birthday, type, money
+    username, hashed_password, email, avatar, firstname, lastname, birthday, money
 
     :param username: Псевдоним пользователя
     """
-    sql = """SELECT username, hashed_password, email, avatar as avatar_url,
-                    firstname, lastname, birthday, type as type_, money
+    sql = """SELECT username, hashed_password, email, avatar as avatar_url, firstname, lastname, birthday, money
              FROM users
              WHERE username = $1
              """
@@ -106,7 +104,7 @@ async def get_list_users() -> list[asyncpg.Record]:
     """
     Возвращает список пользователей из базы данных
     """
-    sql = """SELECT id, username, email, avatar as avatar_url, firstname, lastname, birthday, type as type_, money
+    sql = """SELECT id, username, email, avatar as avatar_url, firstname, lastname, birthday, money
              FROM users"""
     result = await DataBase.fetch(sql)
     return result

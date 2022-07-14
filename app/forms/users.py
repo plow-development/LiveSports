@@ -24,7 +24,6 @@ async def User_registration(
         firstname: str = Form(..., description='Имя пользователя'),
         lastname: str = Form(..., description='Фамилия пользователя'),
         birthday: date = Form(..., description='День Рожденья пользователя'),
-        type_: str = Form(..., description='Тип пользователя'),
         money: int = Form(..., description='Баллы пользователя')) -> JSONResponse:
     """
     Регистрация пользователя
@@ -35,14 +34,13 @@ async def User_registration(
     :param firstname: Имя пользователя<br>
     :param lastname: Фамилия пользователя<br>
     :param birthday: День Рожденья пользователя<br>
-    :param type_: Тип пользователя<br>
     :param money: Баллы пользователя<br>
     :return: JSONResponse HTTP_201_CREATED {'access_token': access_token, 'token_type': 'bearer'}
     """
     username = request.username
     hashed_password = get_password_hash(request.password)
     await add_user(username=username, hashed_password=hashed_password, email=email, image=image, firstname=firstname,
-                   lastname=lastname, birthday=birthday, type_=type_, money=money)
+                   lastname=lastname, birthday=birthday, money=money)
     timeout = timedelta(minutes=TIMEOUT)
     access_token = create_access_token(data={'sub': username}, expires_delta=timeout)
     return JSONResponse(

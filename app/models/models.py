@@ -12,7 +12,6 @@ class BaseUserOut(BaseModel):
     firstname: str = Field(..., description='Имя пользователя')
     lastname: str = Field(..., description='Фамилия пользователя')
     birthday: date = Field(..., description='День рожденья пользователя')
-    type_: str = Field(..., description='Тип пользователя')
     money: int = Field(..., description='Баллы пользователя')
 
 
@@ -39,7 +38,6 @@ class BaseUserOutInList(BaseModel):
     firstname: str = Field(..., description='Имя пользователя')
     lastname: str = Field(..., description='Фамилия пользователя')
     birthday: date = Field(..., description='День рожденья пользователя')
-    type_: str = Field(..., description='Тип пользователя')
     money: int = Field(..., description='Баллы пользователя')
 
 
