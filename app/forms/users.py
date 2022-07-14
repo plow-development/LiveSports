@@ -112,7 +112,8 @@ async def Deleting_User(
     :param user: Авторизованный пользователь<br>
     :return: JSONResponse HTTP_202_ACCEPTED
     """
-    await del_user(user['id'])
+    user_id: int = await get_user_id(user['username'])
+    await del_user(user_id)
     return JSONResponse(
         status_code=status.HTTP_202_ACCEPTED,
         content={'message': 'Вы успешно удалили свой аккаунт!'}
