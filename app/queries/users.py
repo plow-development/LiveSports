@@ -1,9 +1,9 @@
-from datetime import datetime, date
+import hashlib
+from datetime import date
 
 import asyncpg
-import hashlib
-
 from fastapi import UploadFile
+
 from app.exceptions import BadRequest, NotFound
 from app.queries.teams import get_team
 from app.services.database import DataBase
@@ -21,8 +21,9 @@ async def add_user(username: str, hashed_password: str, email: str, image: Uploa
     :param birthday: День Рожденья пользователя
     :param money: Баланс пользователя (в баллах)
     """
-    sql = """INSERT INTO users (username, hashed_password, email, avatar, firstname, lastname, birthday, money)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)"""
+    sql = """
+    INSERT INTO users (username, hashed_password, email, avatar, firstname, lastname, birthday, money)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)"""
     if image:
         image_data = image.file.read()
         image_extension = image.filename.split('.')[-1]
