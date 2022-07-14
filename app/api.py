@@ -6,6 +6,7 @@ from starlette.staticfiles import StaticFiles
 from app.exceptions import CommonException
 from app.services.database import DataBase
 from app.forms.users import router_users
+from app.forms.sports import router_sports
 
 app = FastAPI(title='«Умный город: Живи спортом»')
 static = StaticFiles(directory='resources/avatars')
@@ -27,6 +28,7 @@ async def handler_badrequest(requests: Request, exception: CommonException) -> J
 
 
 app.include_router(router_users)
+app.include_router(router_sports)
 
 app.mount('/resources/avatars', static)
 app.add_middleware(
