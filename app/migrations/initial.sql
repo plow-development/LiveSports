@@ -1,7 +1,7 @@
 CREATE TABLE users
 (
     id              serial PRIMARY KEY,
-    username        text      not null,
+    username        text      not null unique,
     hashed_password text      not null,
     email           text      not null,
     avatar          text      not null,
