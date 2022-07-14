@@ -8,10 +8,10 @@ from app.exceptions import NotFound
 from app.services.database import DataBase
 
 
-async def add_news(title: str, content: str, preview: UploadFile, publictime: datetime, user_id: int) -> None:
+async def add_news(title: str, content: str, preview: UploadFile, publictime: datetime, user_id: int, sport_id: int):
     sql = """
-    INSERT INTO news (title, content, preview, publictime, author_id)
-    VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO news (title, content, preview, publictime, author_id, sport_id)
+    VALUES ($1, $2, $3, $4, $5, $6)
     """
     if preview:
         image_data = preview.file.read()
@@ -21,12 +21,12 @@ async def add_news(title: str, content: str, preview: UploadFile, publictime: da
             image_file.write(image_data)
     else:
         image_name = None
-    await DataBase.execute(sql, title, content, image_name, publictime, user_id)
+    await DataBase.execute(sql, title, content, image_name, publictime, user_id, sport_id)
 
 
 async def get_news(news_id: int) -> asyncpg.Record:
     sql = """
-    SELECT id as news_id, title, content, preview, publictime, author_id
+    SELECT id as news_id, title, content, preview, publictime, author_id, sport_id
     FROM news
     WHERE id = ($1)
     """
@@ -38,14 +38,24 @@ async def get_news(news_id: int) -> asyncpg.Record:
 
 async def news_list() -> list[asyncpg.Record]:
     sql = """
-    SELECT id as news_id, title, content, preview, publictime, author_id
+    SELECT id as news_id, title, content, preview, publictime, author_id, sport_id
     FROM news
     """
     result = await DataBase.fetch(sql)
     return result
 
 
-async def del_news(news_id: int) -> None:
+async def news_list_by_interests(sport_id: int) -> list[asyncpg.Record]:
+    sql = """
+    SELECT id as news_id, title, content, preview, publictime, author_id, sport_id
+    FROM news
+    WHERE sport_id = ($1)
+    """
+    result = await DataBase.fetch(sql, sport_id)
+    return result
+
+
+async def del_news(news_id: int):
     await get_news(news_id)  # Optional
     sql = """
     DELETE FROM news

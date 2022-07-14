@@ -40,7 +40,8 @@ CREATE TABLE news
     content    TEXT      NOT NULL,
     preview    TEXT      NOT NULL,
     publictime TIMESTAMP NOT NULL,
-    author_id  integer   NOT NULL references users (id) on delete set null
+    author_id  integer   NOT NULL references users (id) on delete set null,
+    sport_id   integer   NOT NULL references sports (id) on delete set null
 );
 
 
@@ -62,7 +63,6 @@ CREATE TABLE broadcasts
     title       TEXT    NOT NULL,
     description TEXT    NOT NULL,
     preview     TEXT    NOT NULL,
-    event_id    integer NOT NULL references events (id) on delete set null,
     link        TEXT    NOT NULL
 );
 
@@ -100,10 +100,8 @@ ALTER TABLE teams
 
 ALTER TABLE news
     ADD CONSTRAINT news_fk0 FOREIGN KEY (author_id) REFERENCES users (id);
-
-
-ALTER TABLE broadcasts
-    ADD CONSTRAINT broadcasts_fk0 FOREIGN KEY (event_id) REFERENCES events (id);
+ALTER TABLE "news"
+    ADD CONSTRAINT "news_fk1" FOREIGN KEY ("sport_id") REFERENCES "sports" ("id");
 
 ALTER TABLE teams_users
     ADD CONSTRAINT teams_users_fk0 FOREIGN KEY (team_id) REFERENCES teams (id);

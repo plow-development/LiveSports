@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Form, status, Query
 from fastapi.responses import JSONResponse
 
-from app.models.models import SportsOut
+from app.models.models import SportOut
 from app.queries.sports import add_sport, get_sport, get_sport_id, get_list_sport
 from app.utils.utils import format_record, format_records
 
@@ -28,21 +28,21 @@ async def Creating_a_sport(
         content={'message': f'Вид спорта «{sport_name}» успешно создан!'})
 
 
-@router_sports.get('/sport/get', response_model=SportsOut)
+@router_sports.get('/sport/get', response_model=SportOut)
 async def Information_about_the_sport(
-        sport_name: str = Query(..., description='Название вида спорта')) -> SportsOut | None:
+        sport_name: str = Query(..., description='Название вида спорта')) -> SportOut | None:
     """
     :param sport_name: Название вида спорта<br>
     :return: Информация о виде спорта
     """
     sport_id: int = await get_sport_id(sport_name)
-    return format_record(await get_sport(sport_id), SportsOut)
+    return format_record(await get_sport(sport_id), SportOut)
 
 
-@router_sports.get('/sport/list', response_model=list[SportsOut])
+@router_sports.get('/sport/list', response_model=list[SportOut])
 async def List_of_sports() -> list:
     """
     :return: Список видов спорта
     """
     list_sports = await get_list_sport()
-    return format_records(list_sports, SportsOut)
+    return format_records(list_sports, SportOut)

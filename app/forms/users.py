@@ -8,8 +8,8 @@ from pydantic import EmailStr
 
 from app.config import TIMEOUT
 from app.exceptions import BadRequest
-from app.models.models import UserComplex, BaseUserOut, UsersTeamOut, BaseSportOut, BaseUserOutInList, UserComplexInList
-from app.queries.users import add_user, get_user_team, get_user, get_user_sports, get_list_users, del_user, get_user_id
+from app.models.models import UserComplex
+from app.queries.users import add_user, get_user_team, get_user, get_user_sports, get_list_users, del_user
 from app.user_hash import get_password_hash, verify_password, create_access_token, get_current_user
 from app.utils.utils import format_record, format_records
 
@@ -84,7 +84,7 @@ async def User_information(user: asyncpg.Record = Depends(get_current_user)):
     )
 
 
-@router_users.get('/users/list', response_model=list[UserComplexInList])
+@router_users.get('/users/list', response_model=list[UserComplex])
 async def List_of_users():
     """
     Получение списка информации о пользователе
