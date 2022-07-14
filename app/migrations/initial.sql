@@ -27,7 +27,7 @@ CREATE TABLE teams
 (
     id        serial PRIMARY KEY,
     name      TEXT    NOT NULL,
-    master_id TEXT    NOT NULL references users (id) on delete set null,
+    master_id integer NOT NULL references users (id) on delete set null,
     sport_id  integer NOT NULL references sports (id) on delete set null
 );
 
