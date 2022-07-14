@@ -5,6 +5,7 @@ import asyncpg
 
 from fastapi import UploadFile
 from app.exceptions import NotFound
+from app.queries.sports import get_sport
 from app.services.database import DataBase
 
 
@@ -21,6 +22,7 @@ async def add_news(title: str, content: str, preview: UploadFile, publictime: da
             image_file.write(image_data)
     else:
         image_name = None
+    await get_sport(sport_id)  # Проверка существования вида спорта
     await DataBase.execute(sql, title, content, image_name, publictime, user_id, sport_id)
 
 
