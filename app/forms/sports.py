@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Form, status
+from fastapi import APIRouter, Form, status, Query
 from fastapi.responses import JSONResponse
 
 from app.models.models import SportsOut
@@ -30,7 +30,7 @@ async def Creating_a_sport(
 
 @router_sports.get('/sport/get', response_model=SportsOut)
 async def Information_about_the_sport(
-        sport_name: str = Form(..., description='Название вида спорта')) -> SportsOut | None:
+        sport_name: str = Query(..., description='Название вида спорта')) -> SportsOut | None:
     """
     :param sport_name: Название вида спорта<br>
     :return: Информация о виде спорта
