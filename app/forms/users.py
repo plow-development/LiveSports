@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
 import asyncpg
 from fastapi import APIRouter, Depends, Form, status, UploadFile, File

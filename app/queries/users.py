@@ -58,6 +58,12 @@ async def get_user(username: str) -> asyncpg.Record:
 
 
 async def get_user_id(username: str) -> int:
+    """
+    Получение ID пользователя по его псевдониму
+
+    :param username: Псевдоним пользователя<br>
+    :return: Int ID пользователя
+    """
     result = await DataBase.fetchval("""SELECT id FROM users WHERE username = $1""", username)
     if not result:
         raise NotFound("Пользователь не существует!")
