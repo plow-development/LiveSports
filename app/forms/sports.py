@@ -40,7 +40,7 @@ async def Information_about_the_sport(
 
 
 @router_sports.get('/sport/list', response_model=list[SportsOut])
-async def List_of_teams() -> list:
+async def List_of_sports() -> list:
     """
     :return: Список видов спорта
     """
