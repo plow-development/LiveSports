@@ -9,6 +9,7 @@ from app.forms.users import router_users
 from app.forms.sports import router_sports
 from app.forms.news import router_news
 from app.forms.broadcasts import router_broadcasts
+from app.forms.events import router_events
 
 app = FastAPI(title='«Умный город: Живи спортом»')
 static = StaticFiles(directory='resources/avatars')
@@ -33,6 +34,7 @@ app.include_router(router_users)
 app.include_router(router_sports)
 app.include_router(router_news)
 app.include_router(router_broadcasts)
+app.include_router(router_events)
 
 app.mount('/resources/avatars', static)
 app.add_middleware(

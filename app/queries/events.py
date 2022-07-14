@@ -30,3 +30,13 @@ async def events_list() -> list[asyncpg.Record]:
     """
     result = await DataBase.fetch(sql)
     return result
+
+
+async def events_list_by_datetime(starttime: datetime) -> list[asyncpg.Record]:
+    sql = """
+    SELECT id as event_id, name, starttime, latitude, longitude
+    FROM events
+    WHERE starttime = ($1)
+    """
+    result = await DataBase.fetch(sql, starttime)
+    return result
