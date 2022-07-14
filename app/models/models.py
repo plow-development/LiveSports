@@ -15,7 +15,7 @@ class BaseUserOut(BaseModel):
     money: int = Field(..., description='Баллы пользователя')
 
 
-class BaseTeamOut(BaseModel):
+class UsersTeamOut(BaseModel):
     name: str = Field(None, description='Команда участников')
 
 
@@ -25,7 +25,7 @@ class BaseSportOut(BaseModel):
 
 class UserComplex(BaseModel):
     user: BaseUserOut = Field(...)
-    teams: list[BaseTeamOut] = Field(None)
+    teams: list[UsersTeamOut] = Field(None)
     sport_types: list[BaseSportOut] = Field(None)
 
 
@@ -43,7 +43,7 @@ class BaseUserOutInList(BaseModel):
 
 class UserComplexInList(BaseModel):
     user: BaseUserOutInList = Field(...)
-    team: list[BaseTeamOut] = Field(None)
+    team: list[UsersTeamOut] = Field(None)
     sport_type: list[BaseSportOut] = Field(None)
 
 
@@ -54,3 +54,18 @@ class SportsOut(BaseModel):
     description: str = Field(..., description='Описание вида спорта')
     sport_type: str = Field(..., description='Тип вида спорта')
 
+# Teams
+
+class TeamNameOut(BaseModel):
+    name: str = Field(None, description='Название команды')
+
+class TeamUserNameOut(BaseModel):
+    username: str = Field(None, description='Псевдоним владельца команды')
+
+class TeamSportNameOut(BaseModel):
+    name: str = Field(None, description='Вид спорта команды')
+
+class TeamComplexOut(BaseModel):
+    team_name: TeamNameOut = Field(None, description='Название команды')
+    master_name: TeamUserNameOut = Field(None, description='Псевдоним владельца команды')
+    sport_name: TeamSportNameOut = Field(None, description='Вид спорта команды')
