@@ -8,6 +8,7 @@ from app.services.database import DataBase
 from app.forms.users import router_users
 from app.forms.sports import router_sports
 from app.forms.news import router_news
+from app.forms.broadcasts import router_broadcasts
 
 app = FastAPI(title='«Умный город: Живи спортом»')
 static = StaticFiles(directory='resources/avatars')
@@ -31,6 +32,7 @@ async def handler_badrequest(requests: Request, exception: CommonException) -> J
 app.include_router(router_users)
 app.include_router(router_sports)
 app.include_router(router_news)
+app.include_router(router_broadcasts)
 
 app.mount('/resources/avatars', static)
 app.add_middleware(
