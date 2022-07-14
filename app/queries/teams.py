@@ -1,6 +1,6 @@
 import asyncpg
 
-from app.exceptions import BadRequest, NotFound, Forbidden
+from app.exceptions import NotFound, Forbidden
 from app.services.database import DataBase
 
 
@@ -33,6 +33,15 @@ async def get_list_team() -> list[asyncpg.Record]:
     """
     sql = """SELECT id, name, master_id, sport_id FROM teams"""
     result = await DataBase.fetch(sql)
+    return result
+
+
+async def get_team_list_user(team_id: int):
+    """Возвращает список ID пользователей из БД в определённой команде"""
+    sql = """SELECT user_id FROM teams_users WHERE team_id = $1"""
+    result = await DataBase.fetch(sql, team_id)
+    if not result:
+        raise NotFound('Команда не существует!')
     return result
 
 
