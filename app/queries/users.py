@@ -91,7 +91,8 @@ async def get_list_users() -> list[asyncpg.Record]:
     """
     Возвращает список пользователей из базы данных
     """
-    sql = """SELECT id, username, email, avatar, firstname, lastname, birthday, type, money FROM users"""
+    sql = """SELECT id, username, email, avatar as avatar_url, firstname, lastname, birthday, type as type_, money
+             FROM users"""
     result = await DataBase.fetch(sql)
     return result
 
