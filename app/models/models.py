@@ -46,6 +46,14 @@ class BroadcastOut(BaseModel):
     link: str = Field(None)
 
 
+class EventOut(BaseModel):
+    event_id: int = Field(None)
+    name: str = Field(None)
+    starttime: datetime = Field(None)
+    latitude: float = Field(None)
+    longitude: float = Field(None)
+
+
 class UserComplex(BaseModel):
     user: UserOut = Field(None, description='Участник')
     teams: list[TeamOut] = Field(None, description='Команды, в которых состоит участник')
