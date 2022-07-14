@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from pydantic import BaseModel, Field, EmailStr
 
@@ -26,6 +26,16 @@ class TeamOut(BaseModel):
     name: str = Field(None, description='Название команды')
     master_id: int = Field(None, description='ID пользователя - владельца команды')
     sport_id: int = Field(None, description='ID вида спорта команды')
+
+
+class NewsOut(BaseModel):
+    news_id: int = Field(None)
+    title: str = Field(None)
+    content: str = Field(None)
+    preview: str = Field(None)
+    publictime: datetime = Field(None)
+    author_id: int = Field(None)
+    sport_id: int = Field(None)
 
 
 class UserComplex(BaseModel):
