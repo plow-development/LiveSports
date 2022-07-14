@@ -14,7 +14,7 @@ async def add_broadcasts(title: str, description: str, preview: UploadFile, link
     if preview:
         image_data = preview.file.read()
         image_extension = preview.filename.split('.')[-1]
-        image_name = f'resources/news_preview/{hashlib.sha224(image_data).hexdigest()}.{image_extension}'
+        image_name = f'resources/broadcasts_preview/{hashlib.sha224(image_data).hexdigest()}.{image_extension}'
         with open(image_name, mode='wb+') as image_file:
             image_file.write(image_data)
     else:
