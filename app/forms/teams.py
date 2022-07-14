@@ -2,10 +2,10 @@ import asyncpg
 from fastapi import APIRouter, Depends, Form, status, Query
 from fastapi.responses import JSONResponse
 
-from app.models.models import TeamNameOut, TeamUserNameOut, TeamSportNameOut, TeamComplexOut
+from app.models.models import UserOut, TeamOut, SportOut, TeamComplex
 from app.queries.sports import get_sport
 from app.queries.teams import add_team, get_team
-from app.queries.users import get_user_id, get_user
+from app.queries.users import get_user
 from app.user_hash import get_current_user
 from app.utils.utils import format_record
 
@@ -31,7 +31,7 @@ async def Create_team(
         content={'message': f'Команда «{team_name}» успешно создана!'})
 
 
-@router_team.get('/team/get', response_model=TeamComplexOut)
+@router_team.get('/team/get', response_model=TeamComplex)
 async def Info_team(
         team_id: int = Query(..., description='ID команды')) -> TeamComplexOut:
     """
@@ -42,8 +42,8 @@ async def Info_team(
     master_name = (await get_user(team['master_id']))['username']
     sport_name = (await get_sport(team['sport_id']))['name']
 
-    return TeamComplexOut(
-        team_name=format_record(team['name'], TeamNameOut),
-        master_name=format_record(master_name, TeamUserNameOut),
-        sport_name=format_record(sport_name, TeamSportNameOut)
+    return TeamComplex(
+        team_name=format_record(team['name'], TeamOut),
+        master_name=format_record(master_name, UserOut),
+        sport_name=format_record(sport_name, SportOut)
     )
