@@ -26,7 +26,7 @@ async def add_user(username: str, hashed_password: str, email: str, image: Uploa
     sql = """INSERT INTO users(username, hashed_password, email, avatar, firstname, lastname, birthday, type, money)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
              """
-    if image is not None:
+    if image:
         image_data = image.file.read()
         image_extension = image.filename.split('.')[-1]
         image_name = f'resources/avatars/{hashlib.sha224(image_data).hexdigest()}.{image_extension}'
@@ -48,7 +48,7 @@ async def get_user(username: str) -> asyncpg.Record:
 
     :param username: Псевдоним пользователя
     """
-    sql = """SELECT username, hashed_password, email, avatar, firstname, lastname, birthday, type, money FROM users
+    sql = """SELECT username, hashed_password, email, avatar as avatar_url, firstname, lastname, birthday, type as type_, money FROM users
              WHERE username = $1
              """
     result = await DataBase.fetch(sql, username)

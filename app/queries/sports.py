@@ -67,6 +67,6 @@ async def get_list_sport() -> list[asyncpg.Record]:
     """
     :return: Список видов спорта из БД
     """
-    sql = """SELECT name, description, type FROM sports"""
+    sql = """SELECT name, description, type as sport_type FROM sports"""
     result = await DataBase.fetch(sql)
     return result

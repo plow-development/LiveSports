@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta, date
 
 import asyncpg
 from fastapi import APIRouter, Depends, Form, status, UploadFile, File
@@ -23,7 +23,7 @@ async def User_registration(
         image: UploadFile = File(..., description='Аватарка пользователя'),
         firstname: str = Form(..., description='Имя пользователя'),
         lastname: str = Form(..., description='Фамилия пользователя'),
-        birthday: datetime = Form(..., description='День Рожденья пользователя'),
+        birthday: date = Form(..., description='День Рожденья пользователя'),
         type_: str = Form(..., description='Тип пользователя'),
         money: int = Form(..., description='Баллы пользователя')) -> JSONResponse:
     """

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Form, status, Query
 from fastapi.responses import JSONResponse
 
 from app.models.models import SportsOut
-from app.queries.sports import add_sport, get_sport_id, get_list_sport
+from app.queries.sports import add_sport, get_sport, get_sport_id, get_list_sport
 from app.utils.utils import format_record, format_records
 
 router_sports = APIRouter(tags=['Виды спорта'])
@@ -36,7 +36,7 @@ async def Information_about_the_sport(
     :return: Информация о виде спорта
     """
     sport_id: int = await get_sport_id(sport_name)
-    return format_record(sport_id, SportsOut)
+    return format_record(await get_sport(sport_id), SportsOut)
 
 
 @router_sports.get('/sport/list', response_model=list[SportsOut])
