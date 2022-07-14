@@ -32,5 +32,5 @@ async def List_of_news():
 
 
 @router_news.get('/news/list_by_interests', response_model=list[NewsOut])
-async def List_of_news_by_interests(sport_id: int):
-    return format_records(await news_list_by_interests(sport_id), NewsOut)
+async def List_of_news_by_interests(user_id: int):
+    return format_records(await news_list_by_interests(user_id), NewsOut)

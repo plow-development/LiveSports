@@ -47,13 +47,17 @@ async def news_list() -> list[asyncpg.Record]:
     return result
 
 
-async def news_list_by_interests(sport_id: int) -> list[asyncpg.Record]:
+async def news_list_by_interests(user_id: int) -> list[asyncpg.Record]:
     sql = """
     SELECT id as news_id, title, content, preview, publictime, author_id, sport_id
     FROM news
-    WHERE sport_id = ($1)
+    WHERE sport_id IN (
+        SELECT sport_id
+        FROM user_sports
+        WHERE user_id = ($1)
+        )
     """
-    result = await DataBase.fetch(sql, sport_id)
+    result = await DataBase.fetch(sql, user_id)
     return result
 
 
