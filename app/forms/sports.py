@@ -2,7 +2,7 @@ from fastapi import APIRouter, Form, status
 from fastapi.responses import JSONResponse
 
 from app.models.models import SportsOut
-from app.queries.sports import add_sport, get_sport_id, get_sport_name, get_list_sport
+from app.queries.sports import add_sport, get_sport_id, get_list_sport
 from app.utils.utils import format_record, format_records
 
 router_sports = APIRouter(tags=['Виды спорта'])
