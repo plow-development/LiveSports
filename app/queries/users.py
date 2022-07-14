@@ -7,22 +7,6 @@ from fastapi import UploadFile
 from app.exceptions import BadRequest, NotFound
 from app.services.database import DataBase
 
-"""
-CREATE TABLE users
-(
-    id              serial PRIMARY KEY,
-    username        text      not null unique,
-    hashed_password text      not null,
-    email           text      not null unique,
-    avatar          text      not null,
-    firstname       text      not null,
-    lastname        text      not null,
-    birthday        timestamp not null,
-    type            text      not null,
-    money           integer   not null
-);
-"""
-
 async def add_user(username: str, hashed_password: str, email: str, image: UploadFile,
                    firstname: str, lastname: str, birthday: datetime, type_: str, money: int) -> None:
     """
@@ -55,11 +39,17 @@ async def add_user(username: str, hashed_password: str, email: str, image: Uploa
     except asyncpg.UniqueViolationError as e:
         raise BadRequest("Пользователь уже существует!") from e
 
-async def get_user(user_id: int) -> asyncpg.Record:
-    sql = """SELECT username, hashed_password, email, avatar, firstname, lastname, birthday, type, money FROM users
-             WHERE id = $1
+async def get_user(username: str) -> asyncpg.Record:
+    """
+    Возвращает данные о пользователе:
+    username, email, avatar, firstname, lastname, birthday, type, money
+
+    :param username: Псевдоним пользователя
+    """
+    sql = """SELECT username, email, avatar, firstname, lastname, birthday, type, money FROM users
+             WHERE username = $1
              """
-    result = await DataBase.fetch(sql, user_id)
+    result = await DataBase.fetch(sql, username)
     if not result:
         raise NotFound("Пользователь не существует!")
     return result[0]
