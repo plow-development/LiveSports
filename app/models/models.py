@@ -47,3 +47,12 @@ class UserComplexInList(BaseModel):
     user: BaseUserOutInList = Field(...)
     team: list[BaseTeamOut] = Field(None)
     sport_type: list[BaseSportOut] = Field(None)
+
+
+# Sports
+
+class SportsOut(BaseModel):
+    name: str = Field(..., description='Название вида спорта')
+    description: str = Field(..., description='Описание вида спорта')
+    sport_type: str = Field(..., description='Тип вида спорта')
+
