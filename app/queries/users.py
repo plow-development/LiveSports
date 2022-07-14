@@ -48,7 +48,9 @@ async def get_user(username: str) -> asyncpg.Record:
 
     :param username: Псевдоним пользователя
     """
-    sql = """SELECT username, hashed_password, email, avatar as avatar_url, firstname, lastname, birthday, type as type_, money FROM users
+    sql = """SELECT username, hashed_password, email, avatar as avatar_url,
+                    firstname, lastname, birthday, type as type_, money
+             FROM users
              WHERE username = $1
              """
     result = await DataBase.fetch(sql, username)
