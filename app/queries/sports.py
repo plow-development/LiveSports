@@ -20,12 +20,29 @@ async def add_sport(name: str, description: str, sport_type: str) -> None:
         raise BadRequest(f'Вид спорта с названием «{name}» уже существует!') from e
 
 
+async def get_sport(sport_id: int) -> asyncpg.Record:
+    """
+    Получение информации о виде спорта из БД по его ID
+
+    :param sport_id: ID вида спорта
+    :return: Множество ячеек подходящей строки таблицы sports
+    """
+    sql = """SELECT name, description, type as sport_type
+             FROM sports
+             WHERE id = $1
+             """
+    result = await DataBase.fetch(sql, sport_id)
+    if not result:
+        raise NotFound("Пользователь не существует!")
+    return result[0]
+
+
 async def get_sport_id(name: str) -> int:
     """
     Получает ID вида спорта из БД по его названию
 
     :param name: Название вида спорта
-    :return: Int ID вида спорта
+    :return: ID вида спорта
     """
     sql = """SELECT id FROM sports WHERE name = $1"""
     result = await DataBase.fetchval(sql, name)
@@ -38,7 +55,7 @@ async def get_sport_name(sport_id: int) -> str:
     Получает название вида спорта из БД по его ID
 
     :param sport_id: ID вида спорта
-    :return: Str название вида спорта
+    :return: Название вида спорта
     """
     sql = """SELECT name FROM sports WHERE id = $1"""
     result = await DataBase.fetchval(sql, sport_id)
