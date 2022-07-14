@@ -41,6 +41,7 @@ async def Info_team(
     team = (await get_team(team_id))['name']
     master_name = (await get_user(team['master_id']))['username']
     sport_name = (await get_sport(team['sport_id']))['name']
+
     return TeamComplexOut(
         team_name=format_record(team['name'], TeamNameOut),
         master_name=format_record(master_name, TeamUserNameOut),

@@ -22,19 +22,18 @@ async def add_sport(name: str, description: str, sport_type: str) -> None:
 
 async def get_sport(sport_id: int) -> asyncpg.Record:
     """
-    Получение информации о виде спорта из БД по его ID
-
+    Получение информации о виде спорта из БД
     :param sport_id: ID вида спорта
     :return: Множество ячеек подходящей строки таблицы sports
     """
-    sql = """SELECT name, description, type as sport_type
+    sql = """SELECT id as sport_id, name, description, type as sport_type
              FROM sports
              WHERE id = $1
              """
-    result = await DataBase.fetch(sql, sport_id)
+    result = await DataBase.fetchrow(sql, sport_id)
     if not result:
-        raise NotFound("Пользователь не существует!")
-    return result[0]
+        raise NotFound("Вид спорта не найден!")
+    return result
 
 
 async def get_sport_id(name: str) -> int:
