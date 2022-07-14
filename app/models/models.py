@@ -29,8 +29,13 @@ class UserComplex(BaseModel):
 
 class BaseUserOutInList(BaseModel):
     username: str = Field(..., description='Ник пользователя')
-    first_name: str = Field(None, description='Имя пользователя')
-    last_name: str = Field(None, description='Фамилия пользователя')
+    email: EmailStr = Field(None, description='Почта пользователя')
+    avatar_url: str = Field(None, description='Аватарка пользователя')
+    firstname: str = Field(None, description='Имя пользователя')
+    lastname: str = Field(None, description='Фамилия пользователя')
+    birthday: date = Field(None, description='День рожденья пользователя')
+    type_: str = Field(None, description='Тип пользователя')
+    money: int = Field(None, description='Баллы пользователя')
 
 class UserComplexInList(BaseModel):
     user: BaseUserOutInList = Field(...)
