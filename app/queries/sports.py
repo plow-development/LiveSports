@@ -4,16 +4,18 @@ from app.exceptions import BadRequest, NotFound
 from app.services.database import DataBase
 
 
-async def add_sport(name: str) -> None:
+async def add_sport(name: str, description: str, sport_type: str) -> None:
     """
     Создаёт вид спорта в БД
 
     :param name: Название вида спорта
+    :param description: Описание вида спорта
+    :param sport_type: Тип вида спорта
     :return: None
     """
     sql = """INSERT INTO sports(name, description, type) VALUES ($1,$2,$3)"""
     try:
-        await DataBase.execute(sql, name)
+        await DataBase.execute(sql, name, description, sport_type)
     except asyncpg.UniqueViolationError as e:
         raise BadRequest(f'Вид спорта с названием «{name}» уже существует!') from e
 
