@@ -1,0 +1,38 @@
+from datetime import datetime
+
+from pydantic import BaseModel, Field, EmailStr
+
+# UserOut
+
+class BaseUserOut(BaseModel):
+    username: str = Field(..., description='Ник пользователя')
+    email: EmailStr = Field(None, description='Почта пользователя')
+    avatar_url: str = Field(None, description='Аватарка пользователя')
+    firstname: str = Field(None, description='Имя пользователя')
+    lastname: str = Field(None, description='Фамилия пользователя')
+    birthday: datetime = Field(None, description='День рожденья пользователя')
+    type_: str = Field(None, description='Тип пользователя')
+    money: int = Field(None, description='Баллы пользователя')
+
+class BaseTeamOut(BaseModel):
+    name: str = Field(None, description='Команда участников')
+
+class BaseSportOut(BaseModel):
+    name: str = Field(None, description='Вид спорта')
+
+class UserComplex(BaseModel):
+    user: BaseUserOut = Field(...)
+    teams: list[BaseTeamOut] = Field(None)
+    sport_types: list[BaseSportOut] = Field(None)
+
+# UserOutInList
+
+class BaseUserOutInList(BaseModel):
+    username: str = Field(..., description='Ник пользователя')
+    first_name: str = Field(None, description='Имя пользователя')
+    last_name: str = Field(None, description='Фамилия пользователя')
+
+class UserComplexInList(BaseModel):
+    user: BaseUserOutInList = Field(...)
+    team: list[BaseTeamOut] = Field(None)
+    sport_type: list[BaseSportOut] = Field(None)

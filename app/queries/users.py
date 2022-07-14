@@ -7,6 +7,7 @@ from fastapi import UploadFile
 from app.exceptions import BadRequest, NotFound
 from app.services.database import DataBase
 
+
 async def add_user(username: str, hashed_password: str, email: str, image: UploadFile,
                    firstname: str, lastname: str, birthday: datetime, type_: str, money: int) -> None:
     """
@@ -39,6 +40,7 @@ async def add_user(username: str, hashed_password: str, email: str, image: Uploa
     except asyncpg.UniqueViolationError as e:
         raise BadRequest("Пользователь уже существует!") from e
 
+
 async def get_user(username: str) -> asyncpg.Record:
     """
     Возвращает данные о пользователе:
@@ -54,12 +56,12 @@ async def get_user(username: str) -> asyncpg.Record:
         raise NotFound("Пользователь не существует!")
     return result[0]
 
+
 async def get_user_team(user_id: int) -> list[asyncpg.Record]:
     """
     Возвращает из базы данных список команд, в которых состоит пользователь
 
     :param user_id: ID пользователя
-    :return:
     """
     sql = """SELECT teams.name FROM teams_users
              left   join teams
@@ -68,6 +70,7 @@ async def get_user_team(user_id: int) -> list[asyncpg.Record]:
              """
     result = await DataBase.fetch(sql, user_id)
     return result
+
 
 async def get_user_sports(user_id: int) -> list[asyncpg.Record]:
     """
@@ -83,6 +86,7 @@ async def get_user_sports(user_id: int) -> list[asyncpg.Record]:
     result = await DataBase.fetch(sql, user_id)
     return result
 
+
 async def get_list_users() -> list[asyncpg.Record]:
     """
     Возвращает список пользователей из базы данных
@@ -90,6 +94,7 @@ async def get_list_users() -> list[asyncpg.Record]:
     sql = """SELECT id, username, email, avatar, firstname, lastname, birthday, type, money FROM users"""
     result = await DataBase.fetch(sql)
     return result
+
 
 async def user_sport_add(user_id: int, sport_id: int) -> None:
     """
@@ -104,6 +109,7 @@ async def user_sport_add(user_id: int, sport_id: int) -> None:
         await DataBase.execute(sql, user_id, sport_id)
     except asyncpg.UniqueViolationError as e:
         raise BadRequest(f'Вы уже выбирали этот вид спорта!') from e
+
 
 async def del_user(user_id: int) -> None:
     """
