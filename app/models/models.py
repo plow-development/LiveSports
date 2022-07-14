@@ -2,6 +2,7 @@ from datetime import date
 
 from pydantic import BaseModel, Field, EmailStr
 
+
 # UserOut
 
 class BaseUserOut(BaseModel):
@@ -14,16 +15,20 @@ class BaseUserOut(BaseModel):
     type_: str = Field(None, description='Тип пользователя')
     money: int = Field(None, description='Баллы пользователя')
 
+
 class BaseTeamOut(BaseModel):
     name: str = Field(None, description='Команда участников')
 
+
 class BaseSportOut(BaseModel):
     name: str = Field(None, description='Вид спорта')
+
 
 class UserComplex(BaseModel):
     user: BaseUserOut = Field(...)
     teams: list[BaseTeamOut] = Field(None)
     sport_types: list[BaseSportOut] = Field(None)
+
 
 # UserOutInList
 
@@ -36,6 +41,7 @@ class BaseUserOutInList(BaseModel):
     birthday: date = Field(..., description='День рожденья пользователя')
     type_: str = Field(..., description='Тип пользователя')
     money: int = Field(..., description='Баллы пользователя')
+
 
 class UserComplexInList(BaseModel):
     user: BaseUserOutInList = Field(...)
