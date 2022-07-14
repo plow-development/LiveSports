@@ -57,6 +57,13 @@ async def get_user(username: str) -> asyncpg.Record:
     return result[0]
 
 
+async def get_user_id(username: str) -> int:
+    result = await DataBase.fetchval("""SELECT id FROM users WHERE username = $1""", username)
+    if not result:
+        raise NotFound("Пользователь не существует!")
+    return result
+
+
 async def get_user_team(user_id: int) -> list[asyncpg.Record]:
     """
     Возвращает из базы данных список команд, в которых состоит пользователь

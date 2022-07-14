@@ -9,7 +9,7 @@ from pydantic import EmailStr
 from app.config import TIMEOUT
 from app.exceptions import BadRequest
 from app.models.models import UserComplex, BaseUserOut, BaseTeamOut, BaseSportOut, BaseUserOutInList, UserComplexInList
-from app.queries.users import add_user, get_user_team, get_user, get_user_sports, get_list_users, del_user
+from app.queries.users import add_user, get_user_team, get_user, get_user_sports, get_list_users, del_user, get_user_id
 from app.user_hash import get_password_hash, verify_password, create_access_token, get_current_user
 from app.utils.utils import format_record, format_records
 
@@ -78,10 +78,11 @@ async def User_information(user: asyncpg.Record = Depends(get_current_user)):
     :param user: Авторизованный пользователь<br>
     :return: Модель UserComplex
     """
+    user_id: int = await get_user_id(user['username'])
     return UserComplex(
         user=format_record(user, BaseUserOut),
-        team=format_records(await get_user_team(user['id']), BaseTeamOut),
-        sport_type_out=format_records(await get_user_sports(user['id']), BaseSportOut)
+        team=format_records(await get_user_team(user_id), BaseTeamOut),
+        sport_type_out=format_records(await get_user_sports(user_id), BaseSportOut)
     )
 
 
