@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 from pydantic import BaseModel, Field, EmailStr
 
@@ -10,7 +10,7 @@ class BaseUserOut(BaseModel):
     avatar_url: str = Field(None, description='Аватарка пользователя')
     firstname: str = Field(None, description='Имя пользователя')
     lastname: str = Field(None, description='Фамилия пользователя')
-    birthday: datetime = Field(None, description='День рожденья пользователя')
+    birthday: date = Field(None, description='День рожденья пользователя')
     type_: str = Field(None, description='Тип пользователя')
     money: int = Field(None, description='Баллы пользователя')
 

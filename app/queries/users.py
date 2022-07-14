@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 import asyncpg
 import hashlib
@@ -9,7 +9,7 @@ from app.services.database import DataBase
 
 
 async def add_user(username: str, hashed_password: str, email: str, image: UploadFile,
-                   firstname: str, lastname: str, birthday: datetime, type_: str, money: int) -> None:
+                   firstname: str, lastname: str, birthday: date, type_: str, money: int) -> None:
     """
     Создаёт пользователя в базе данных
 
@@ -44,11 +44,11 @@ async def add_user(username: str, hashed_password: str, email: str, image: Uploa
 async def get_user(username: str) -> asyncpg.Record:
     """
     Возвращает данные о пользователе:
-    username, email, avatar, firstname, lastname, birthday, type, money
+    username, hashed_password, email, avatar, firstname, lastname, birthday, type, money
 
     :param username: Псевдоним пользователя
     """
-    sql = """SELECT username, email, avatar, firstname, lastname, birthday, type, money FROM users
+    sql = """SELECT username, hashed_password, email, avatar, firstname, lastname, birthday, type, money FROM users
              WHERE username = $1
              """
     result = await DataBase.fetch(sql, username)

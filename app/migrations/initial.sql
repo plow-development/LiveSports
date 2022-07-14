@@ -7,7 +7,7 @@ CREATE TABLE users
     avatar          text      not null,
     firstname       text      not null,
     lastname        text      not null,
-    birthday        timestamp not null,
+    birthday        date      not null,
     type            text      not null,
     money           integer   not null
 );

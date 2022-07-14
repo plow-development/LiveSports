@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 import asyncpg
 from fastapi import APIRouter, Depends, Form, status, UploadFile, File
@@ -108,7 +108,7 @@ async def Deleting_User(
     """
     Самоудаление пользователя
 
-    :param user: Авторизованный пользователь
+    :param user: Авторизованный пользователь<br>
     :return: JSONResponse HTTP_202_ACCEPTED
     """
     await del_user(user['id'])
