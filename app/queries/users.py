@@ -53,8 +53,16 @@ async def get_user(username: str) -> asyncpg.Record:
                     birthday,
                     money
              FROM users
-             WHERE username = $1"""
+             WHERE username = ($1)"""
     result = await DataBase.fetchrow(sql, username)
+    if not result:
+        raise NotFound("Пользователь не найден!")
+    return result
+
+
+async def get_username(user_id: int):
+    sql = """SELECT username FROM users WHERE id = ($1)"""
+    result = await DataBase.fetchval(sql, user_id)
     if not result:
         raise NotFound("Пользователь не найден!")
     return result

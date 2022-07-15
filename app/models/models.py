@@ -68,3 +68,8 @@ class TeamComplex(BaseModel):
     master_id: UserOut = Field(None, description='Владелец команды')
     sport: SportOut = Field(None, description='Вид спорта команды')
     users: UserOut = Field(None, description='Участники команды')
+
+class NewsComplex(BaseModel):
+    news: NewsOut = Field(None)
+    author: UserOut = Field(None)
+    sport: SportOut = Field(None)
