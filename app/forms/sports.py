@@ -2,7 +2,7 @@ from fastapi import APIRouter, Form, status, Query
 from fastapi.responses import JSONResponse
 
 from app.models.models import SportOut
-from app.queries.sports import add_sport, get_sport, get_sport_id, get_list_sport
+from app.queries.sports import add_sport, get_sport, get_sport_id, get_list_sport, edit_sport_name, edit_sport_description, edit_sport_type
 from app.utils.utils import format_record, format_records
 
 router_sports = APIRouter(tags=['Виды спорта'])
@@ -26,6 +26,26 @@ async def Creating_a_sport(
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
         content={'message': f'Вид спорта «{sport_name}» успешно создан!'})
+
+
+@router_sports.post('/sport/edit/name')
+async def Edit_Sport_Name(
+        sport_id: int = Form(..., description='ID вида спорта'),
+        sport_name: str = Form(..., description='Название вида спорта')):
+    await edit_sport_name(sport_id=sport_id, name=sport_name)
+    return JSONResponse(
+        status_code=status.HTTP_202_ACCEPTED,
+        content={'message': 'Вид спорта успешно переименован!'})
+
+
+@router_sports.post('/sport/edit/name')
+async def Edit_Sport_Type(
+        sport_id: int = Form(..., description='ID вида спорта'),
+        sport_type: str = Form(..., description='Тип вида спорта')):
+    await edit_sport_type(sport_id=sport_id, sport_type=sport_type)
+    return JSONResponse(
+        status_code=status.HTTP_202_ACCEPTED,
+        content={'message': 'Тип вида спорта успешно переименован!'})
 
 
 @router_sports.get('/sport/get', response_model=SportOut)
