@@ -71,16 +71,14 @@ async def User_authorization(request: OAuth2PasswordRequestForm = Depends()) -> 
 @router_users.get('/user', response_model=UserComplex)
 async def User_information(user: asyncpg.Record = Depends(get_current_user)):
     """
-    Получение информации о пользователе
-
-    :param user: Авторизованный пользователь<br>
-    :return: Модель UserComplex
+    Получение информации о пользователе  <br>
+    :param user: Авторизованный пользователь  <br>
+    :return: Модель UserComplex  <br>
     """
-    user_id: int = (await get_user('username'))['id']
     return UserComplex(
         user=format_record(user, UserOut),
-        team=format_records(await get_user_team(user_id), TeamOut),
-        sport_type_out=format_records(await get_user_sports(user_id), SportOut)
+        team=format_records(await get_user_team(user['user_id']), TeamOut),
+        sport_type_out=format_records(await get_user_sports(user['user_id']), SportOut)
     )
 
 
@@ -110,7 +108,7 @@ async def Deleting_User(
     :param user: Авторизованный пользователь<br>
     :return: JSONResponse HTTP_202_ACCEPTED
     """
-    user_id: int = (await get_user('username'))['id']
+    user_id: int = (await get_user(user['username']))['user_id']
     await del_user(user_id)
     return JSONResponse(
         status_code=status.HTTP_202_ACCEPTED,

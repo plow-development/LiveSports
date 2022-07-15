@@ -33,17 +33,11 @@ async def get_user(username: str) -> asyncpg.Record:
     """Возвращает данные о пользователе
     :param username: Псевдоним пользователя
     """
-    sql = """SELECT id as user_id,
-                    username,
-                    hashed_password,
-                    email,
-                    avatar,
-                    firstname,
-                    lastname,
-                    birthday,
-                    money
-             FROM users
-             WHERE username = ($1)"""
+    sql = """
+    SELECT id as user_id, username, hashed_password, email, avatar, firstname, lastname, birthday, money
+    FROM users
+    WHERE username = ($1)
+    """
     result = await DataBase.fetchrow(sql, username)
     if not result:
         raise NotFound("Пользователь не найден!")
@@ -109,7 +103,5 @@ async def del_user(user_id: int) -> None:
     """Удаляет пользователя из БД
     :param user_id: ID пользователя
     """
-    sql = """DELETE FROM users
-             WHERE id = ($1)
-             """
+    sql = """DELETE FROM users WHERE id = ($1)"""
     await DataBase.execute(sql, user_id)
