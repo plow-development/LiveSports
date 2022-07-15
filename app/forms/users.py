@@ -68,7 +68,7 @@ async def User_authorization(request: OAuth2PasswordRequestForm = Depends()) -> 
         content={'access_token': access_token, 'token_type': 'bearer'})
 
 
-@router_users.put('/user', response_model=UserComplex)
+@router_users.get('/user', response_model=UserComplex)
 async def User_information(user: asyncpg.Record = Depends(get_current_user)):
     """
     Получение информации о пользователе  <br>
