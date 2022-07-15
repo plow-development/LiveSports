@@ -1,29 +1,19 @@
-import hashlib
 from datetime import datetime
 
 import asyncpg
 
-from fastapi import UploadFile
 from app.exceptions import NotFound
 from app.queries.sports import get_sport
 from app.services.database import DataBase
 
 
-async def add_news(title: str, content: str, preview: UploadFile, publictime: datetime, user_id: int, sport_id: int):
+async def add_news(title: str, content: str, preview: str, publictime: datetime, user_id: int, sport_id: int):
     sql = """
     INSERT INTO news (title, content, preview, publictime, author_id, sport_id)
     VALUES ($1, $2, $3, $4, $5, $6)
     """
-    if preview:
-        image_data = preview.file.read()
-        image_extension = preview.filename.split('.')[-1]
-        image_name = f'resources/news_preview/{hashlib.sha224(image_data).hexdigest()}.{image_extension}'
-        with open(image_name, mode='wb+') as image_file:
-            image_file.write(image_data)
-    else:
-        image_name = None
     await get_sport(sport_id)  # Проверка существования вида спорта
-    await DataBase.execute(sql, title, content, image_name, publictime, user_id, sport_id)
+    await DataBase.execute(sql, title, content, preview, publictime, user_id, sport_id)
 
 
 async def get_news(news_id: int) -> asyncpg.Record:

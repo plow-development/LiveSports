@@ -9,7 +9,7 @@ from app.queries.news import add_news, get_news, news_list, news_list_by_interes
 from app.queries.sports import get_sport
 from app.queries.users import get_user, get_username
 from app.user_hash import get_current_user
-from app.utils.utils import format_records, format_record
+from app.utils.utils import format_record, format_records
 
 router_news = APIRouter(tags=['Новости'])
 
@@ -18,7 +18,7 @@ router_news = APIRouter(tags=['Новости'])
 async def Creating_news(
         title: str = Form(..., description='Заголовок новости'),
         content: str = Form(..., description='Текст новости'),
-        preview: UploadFile = File(..., description='Картинка новости'),
+        preview: str = Form(..., description='Картинка новости'),
         publictime: datetime = Form(..., description='Время написания новости'),
         user_agent: asyncpg.Record = Depends(get_current_user),
         sport_id: int = Form(..., description='ID вида спорта')) -> JSONResponse:

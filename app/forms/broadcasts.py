@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Form, status, UploadFile, File
+from fastapi import APIRouter, Form, status
 from fastapi.responses import JSONResponse
 
 from app.models.models import BroadcastOut
@@ -12,7 +12,7 @@ router_broadcasts = APIRouter(tags=['Прямые трансляции'])
 async def Creating_broadcast(
         title: str = Form(..., description='Заголовок трансляции'),
         description: str = Form(..., description='Описание трансляции'),
-        preview: UploadFile = File(..., description='Картинка трансляции'),
+        preview: str = Form(..., description='Картинка трансляции'),
         link: str = Form(..., description='Ссылка на трансляцию')) -> JSONResponse:
     await add_broadcasts(title, description, preview, link)
     return JSONResponse(

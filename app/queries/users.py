@@ -1,21 +1,19 @@
-import hashlib
 from datetime import date
 
 import asyncpg
-from fastapi import UploadFile
 
 from app.exceptions import BadRequest, NotFound
 from app.queries.teams import get_team
 from app.services.database import DataBase
 
 
-async def add_user(username: str, hashed_password: str, email: str, image: UploadFile,
+async def add_user(username: str, hashed_password: str, email: str, avatar: str,
                    firstname: str, lastname: str, birthday: date, money: int) -> None:
     """Создаёт пользователя в БД
     :param username: Псевдоним пользователя
     :param hashed_password: Хэшированный пароль
     :param email: Электронная почта пользователя
-    :param image: Ссылка на аватар пользователя
+    :param avatar: Ссылка на аватар пользователя
     :param firstname: Имя пользователя
     :param lastname: Фамилия пользователя
     :param birthday: День Рожденья пользователя
@@ -24,17 +22,9 @@ async def add_user(username: str, hashed_password: str, email: str, image: Uploa
     sql = """
     INSERT INTO users (username, hashed_password, email, avatar, firstname, lastname, birthday, money)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)"""
-    if image:
-        image_data = image.file.read()
-        image_extension = image.filename.split('.')[-1]
-        image_name = f'resources/avatars/{hashlib.sha224(image_data).hexdigest()}.{image_extension}'
-        with open(image_name, mode='wb+') as image_file:
-            image_file.write(image_data)
-    else:
-        image_name = None
     try:
         await DataBase.execute(
-            sql, username, hashed_password, email, image_name, firstname, lastname, birthday, money)
+            sql, username, hashed_password, email, avatar, firstname, lastname, birthday, money)
     except asyncpg.UniqueViolationError as e:
         raise BadRequest("Пользователь уже существует!") from e
 

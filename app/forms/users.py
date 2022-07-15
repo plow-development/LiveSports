@@ -1,7 +1,7 @@
 from datetime import timedelta, date
 
 import asyncpg
-from fastapi import APIRouter, Depends, Form, status, UploadFile, File
+from fastapi import APIRouter, Depends, Form, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import EmailStr
@@ -20,7 +20,7 @@ router_users = APIRouter(tags=['Пользователи'])
 async def User_registration(
         request: OAuth2PasswordRequestForm = Depends(),
         email: EmailStr = Form(..., description='Почта пользователя'),
-        image: UploadFile = File(..., description='Аватарка пользователя'),
+        avatar: str = Form(..., description='Аватарка пользователя'),
         firstname: str = Form(..., description='Имя пользователя'),
         lastname: str = Form(..., description='Фамилия пользователя'),
         birthday: date = Form(..., description='День Рожденья пользователя'),
@@ -30,7 +30,7 @@ async def User_registration(
 
     :param request: Псевдоним и пароль пользователя<br>
     :param email: Почта пользователя<br>
-    :param image: Аватарка пользователя<br>
+    :param avatar: Аватарка пользователя<br>
     :param firstname: Имя пользователя<br>
     :param lastname: Фамилия пользователя<br>
     :param birthday: День Рожденья пользователя<br>
@@ -39,7 +39,7 @@ async def User_registration(
     """
     username = request.username
     hashed_password = get_password_hash(request.password)
-    await add_user(username=username, hashed_password=hashed_password, email=email, image=image, firstname=firstname,
+    await add_user(username=username, hashed_password=hashed_password, email=email, avatar=avatar, firstname=firstname,
                    lastname=lastname, birthday=birthday, money=money)
     timeout = timedelta(minutes=TIMEOUT)
     access_token = create_access_token(data={'sub': username}, expires_delta=timeout)

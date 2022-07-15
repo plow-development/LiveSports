@@ -24,7 +24,7 @@ async def Create_team(
     :param sport_id: ID вида спорта  <br>
     """
     username = user_agent['username']
-    user_id = await get_user_id(username)
+    user_id = (await get_user(username))['id']
     await add_team(team_name=team_name, user_id=user_id, sport_id=sport_id)
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
