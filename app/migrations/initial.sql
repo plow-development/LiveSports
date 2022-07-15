@@ -91,7 +91,8 @@ CREATE TABLE users_to_events
 (
     user_id   integer NOT NULL references users (id) on delete cascade,
     event_id  integer NOT NULL references events (id) on delete cascade,
-    user_type TEXT    NOT NULL
+    user_type TEXT    NOT NULL,
+    unique (user_id, event_id)
 );
 
 

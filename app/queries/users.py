@@ -140,6 +140,37 @@ async def user_sport_add(user_id: int, sport_id: int) -> None:
         raise BadRequest(f'Вы уже выбирали этот вид спорта!') from e
 
 
+async def user_event_join(user_id: int, event_id: int, user_type: str) -> None:
+    """
+    Добавляет в БД тип участника на ивенте
+    :param user_id: ID пользователя
+    :param event_id: ID мероприятия
+    :param user_type: Тип участника
+    """
+    sql = """
+    INSERT INTO users_to_events (user_id, event_id, user_type)
+    VALUES ($1, $2, $3)
+    """
+    try:
+        await DataBase.execute(sql, user_id, event_id, user_type)
+    except asyncpg.UniqueViolationError as e:
+        raise BadRequest('Вы уже записаны на это мероприятие!') from e
+
+
+async def user_event_leave(user_id: int, event_id: int) -> None:
+    """
+    Удаляет из БД посещение участника ивента
+    :param user_id: ID пользователя
+    :param event_id: ID мероприятия
+    """
+    # TODO: Check
+    sql = """
+    DELETE FROM users_to_events
+    WHERE user_id = ($1) and event_id = ($2)
+    """
+    await DataBase.execute(sql, user_id, event_id)
+
+
 async def del_user(user_id: int) -> None:
     """Удаляет пользователя из БД
     :param user_id: ID пользователя

@@ -23,7 +23,7 @@ async def Create_team(
     Пользователь должен быть авторизован!  <br>
     """
     await team_add(team_name=team_name, user_id=user['user_id'], sport_id=sport_id)
-    return Created
+    return Created()
 
 
 @router_team.get('/team/get', response_model=TeamComplex)

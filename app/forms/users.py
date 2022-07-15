@@ -94,7 +94,7 @@ async def User_Editing(
         birthday=birthday,
         money=money
     )
-    return Updated
+    return Updated()
 
 
 @router_users.get('/user/list', response_model=list[UserComplex])
@@ -130,7 +130,7 @@ async def User_Sport_Add(
         user_id=user['user_id'],
         sport_id=sport_id
     )
-    return Joined
+    return Joined()
 
 
 @router_users.delete('/user/del', response_model=Deleted)
@@ -142,4 +142,4 @@ async def Deleting_User(user: asyncpg.Record = Depends(get_current_user)):
     await del_user(
         user_id=user['user_id']
     )
-    return Deleted
+    return Deleted()
