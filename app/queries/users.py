@@ -59,7 +59,7 @@ async def get_username(user_id: int):
 
 async def edit_user(
         user_id: int, username: str = None, email: str = None, avatar: str = None, firstname: str = None,
-        lastname: str = None, birthday: date = None, money: str = None) -> None:
+        lastname: str = None, birthday: date = None, money: int = None) -> None:
     user = await get_user(await get_username(user_id))
     if not username:
         username = user['username']

@@ -74,3 +74,15 @@ class NewsComplex(BaseModel):
     news: NewsOut = Field(None, description='Новость')
     author: UserOut = Field(None, description='Автор новости')
     sport: SportOut = Field(None, description='Вид спорта новости')
+
+
+class Created(BaseModel):
+    details: str = Field('Объект успешно создан!', title='Статус операции')
+
+
+class Joined(BaseModel):
+    details: str = Field('Добавление прошло успешно!', title='Статус операции')
+
+
+class Deleted(BaseModel):
+    details: str = Field('Удаление прошло успешно!', title='Статус операции')
