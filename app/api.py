@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
-from starlette.staticfiles import StaticFiles
 
 from app.exceptions import CommonException
 from app.services.database import DataBase
@@ -12,7 +11,6 @@ from app.forms.broadcasts import router_broadcasts
 from app.forms.events import router_events
 
 app = FastAPI(title='«Умный город: Живи спортом»')
-static = StaticFiles(directory='resources/avatars')
 
 
 @app.on_event('startup')
@@ -36,7 +34,6 @@ app.include_router(router_news)
 app.include_router(router_broadcasts)
 app.include_router(router_events)
 
-app.mount('/resources/avatars', static)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
