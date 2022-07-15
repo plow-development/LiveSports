@@ -43,7 +43,7 @@ async def List_of_news():
     return out
 
 
-@router_news.get('/news/list_by_interests', response_model=list[NewsComplex])
+@router_news.put('/news/list_by_interests', response_model=list[NewsComplex])  # потому что передается user_id
 async def List_of_news_by_interests(user_id: int):
     list_news = await news_list_by_interests(user_id)
     out = list()

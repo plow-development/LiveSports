@@ -48,7 +48,7 @@ async def Edit_Sport_Type(
         content={'message': 'Тип вида спорта успешно переименован!'})
 
 
-@router_sports.get('/sport/get', response_model=SportOut)
+@router_sports.put('/sport/get', response_model=SportOut)
 async def Information_about_the_sport(
         sport_name: str = Query(..., description='Название вида спорта')) -> SportOut | None:
     """
