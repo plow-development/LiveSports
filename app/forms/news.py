@@ -38,7 +38,7 @@ async def List_of_news():
         out.append(NewsComplex(
             news=format_record(news, NewsOut),
             author=format_record(author, UserOut),
-            sport=format_record(sport, UserOut)
+            sport=format_record(sport, SportOut)
         ))
     return out
 
@@ -53,6 +53,6 @@ async def List_of_news_by_interests(user_id: int):
         out.append(NewsComplex(
             news=format_record(news, NewsOut),
             author=format_record(author, UserOut),
-            sport=format_record(sport, UserOut)
+            sport=format_record(sport, SportOut)
         ))
     return out

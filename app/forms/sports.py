@@ -38,7 +38,7 @@ async def Edit_Sport_Name(
         content={'message': 'Вид спорта успешно переименован!'})
 
 
-@router_sports.post('/sport/edit/name')
+@router_sports.post('/sport/edit/type')
 async def Edit_Sport_Type(
         sport_id: int = Form(..., description='ID вида спорта'),
         sport_type: str = Form(..., description='Тип вида спорта')):
