@@ -3,9 +3,10 @@ from datetime import datetime, date
 from fastapi import APIRouter, Form, status, File, Query
 from fastapi.responses import JSONResponse
 
-from app.models.models import EventOut
+from app.models.models import EventOut, SportOut, EventComplex
 from app.queries.events import add_event, events_list, events_list_by_datetime
-from app.utils.utils import format_records
+from app.queries.sports import get_sport
+from app.utils.utils import format_records, format_record
 
 router_events = APIRouter(tags=['Мероприятия'])
 
@@ -24,11 +25,25 @@ async def Creating_event(
         content={'message': f'Мероприятие «{name}» успешно добавлено!'})
 
 
-@router_events.get('/event/list', response_model=list[EventOut])
+@router_events.get('/event/list', response_model=list[EventComplex])
 async def List_of_events():
-    return format_records(await events_list(), EventOut)
+    list_events = await events_list()
+    out = list()
+    for event in list_events:
+        out.append(EventComplex(
+            event=format_record(event, EventOut),
+            sport=format_record(await get_sport(event['sport_id']), SportOut)
+        ))
+    return out
 
 
-@router_events.get('/event/list_by_datetime', response_model=list[EventOut])
+@router_events.get('/event/list_by_datetime', response_model=list[EventComplex])
 async def List_of_events_by_datetime(starttime: date = Query(..., description='Начало мероприятия')):
-    return format_records(await events_list_by_datetime(starttime), EventOut)
+    list_events = await events_list_by_datetime(starttime)
+    out = list()
+    for event in list_events:
+        out.append(EventComplex(
+            event=format_record(event, EventOut),
+            sport=format_record(await get_sport(event['sport_id']), SportOut)
+        ))
+    return out

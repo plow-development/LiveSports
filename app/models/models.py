@@ -76,6 +76,11 @@ class NewsComplex(BaseModel):
     sport: SportOut = Field(None, description='Вид спорта новости')
 
 
+class EventComplex(BaseModel):
+    event: EventOut = Field(None)
+    sport: SportOut = Field(None)
+
+
 class Created(BaseModel):
     details: str = Field('Объект успешно создан!', title='Статус операции')
 
