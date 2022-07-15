@@ -60,7 +60,7 @@ async def team_get(
     sql = """
     SELECT id as team_id, name, master_id, sport_id
     FROM teams
-    WHERE id = $1
+    WHERE id = ($1)
     """
     result = await DataBase.fetchrow(sql, team_id)
     if not result:
@@ -87,8 +87,6 @@ async def get_team_list_user(team_id: int):
     """
     sql = """SELECT user_id FROM teams_users WHERE team_id = $1"""
     result = await DataBase.fetch(sql, team_id)
-    if not result:
-        raise NotFound('Команда не найдена!')
     return result
 
 

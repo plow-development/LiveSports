@@ -48,14 +48,13 @@ async def Edit_Sport_Type(
         content={'message': 'Тип вида спорта успешно переименован!'})
 
 
-@router_sports.put('/sport/get', response_model=SportOut)
+@router_sports.get('/sport/get', response_model=SportOut)
 async def Information_about_the_sport(
-        sport_name: str = Query(..., description='Название вида спорта')) -> SportOut | None:
+        sport_id: int = Query(..., description='ID вида спорта')) -> SportOut | None:
     """
-    :param sport_name: Название вида спорта<br>
+    :param sport_id: Название вида спорта<br>
     :return: Информация о виде спорта
     """
-    sport_id: int = await get_sport_id(sport_name)
     return format_record(await get_sport(sport_id), SportOut)
 
 

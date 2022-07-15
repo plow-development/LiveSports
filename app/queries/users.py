@@ -149,7 +149,6 @@ async def user_sport_leave(user_id: int, sport_id: int) -> None:
     await DataBase.execute(sql, user_id, sport_id)
 
 
-
 async def user_event_join(user_id: int, event_id: int, user_type: str) -> None:
     """
     Добавляет в БД тип участника на ивенте
@@ -187,3 +186,41 @@ async def del_user(user_id: int) -> None:
     """
     sql = """DELETE FROM users WHERE id = ($1)"""
     await DataBase.execute(sql, user_id)
+
+
+async def user_team_join(user_id: int, team_id: int):
+    await get_username(user_id)  # Check
+    await team_get(team_id)  # Check
+    sql = """
+    INSERT INTO teams_users (team_id, user_id)
+    VALUES ($1, $2)
+    """
+    try:
+        await DataBase.execute(sql, team_id, user_id)
+    except asyncpg.UniqueViolationError as e:
+        raise BadRequest('Вы уже состоите в этой команде!') from e
+
+
+async def user_team_list(user_id: int):
+    await get_username(user_id)  # Check
+    sql = """
+    SELECT team_id FROM teams_users WHERE user_id = ($1)
+    """
+    result = await DataBase.fetch(sql, user_id)
+    return result
+
+
+async def user_team_leave(user_id: int, team_id: int):
+    sql = """
+    SELECT team_id
+    FROM teams_users
+    WHERE team_id = ($1) and user_id = ($2)
+    """
+    result = await DataBase.fetchval(sql, team_id, user_id)
+    if not result:
+        raise BadRequest('Вы не состояли в этой команде')
+    sql = """
+    DELETE FROM teams_users
+    WHERE team_id = ($1) and user_id = ($2)
+    """
+    await DataBase.execute(sql, team_id, user_id)

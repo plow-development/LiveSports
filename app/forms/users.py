@@ -1,7 +1,7 @@
 from datetime import timedelta, date
 
 import asyncpg
-from fastapi import APIRouter, Depends, Form, status
+from fastapi import APIRouter, Depends, Form, status, Query
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import EmailStr
@@ -9,8 +9,10 @@ from pydantic import EmailStr
 from app.config import TIMEOUT
 from app.exceptions import BadRequest
 from app.models.models import UserComplex, UserOut, TeamOut, SportOut, Created, Updated, Joined, Deleted
+from app.queries.sports import get_sport
+from app.queries.teams import team_get
 from app.queries.users import add_user, get_user, get_username, edit_user, get_user_team, get_user_sports, \
-    get_list_users, user_sport_add, del_user, user_sport_leave
+    get_list_users, user_sport_add, del_user, user_sport_leave, user_team_join, user_team_list
 from app.user_hash import get_password_hash, verify_password, create_access_token, get_current_user
 from app.utils.utils import format_record, format_records
 
@@ -126,6 +128,7 @@ async def User_Sport_Add(
     :param sport_id:
     :return:
     """
+    await get_sport(sport_id)  # Check
     await user_sport_add(
         user_id=user['user_id'],
         sport_id=sport_id
@@ -150,3 +153,21 @@ async def Deleting_User(user: asyncpg.Record = Depends(get_current_user)):
         user_id=user['user_id']
     )
     return Deleted()
+
+
+@router_users.post('/user/team/join', response_model=Joined)
+async def User_Team_Join(
+        user: asyncpg.Record = Depends(get_current_user),
+        team_id: int = Query(..., description='ID команды')):
+    await user_team_join(user_id=user['user_id'], team_id=team_id)
+    return Joined()
+
+
+@router_users.get('/user/team/list', response_model=TeamOut)
+async def User_Team_List(
+        user: asyncpg.Record = Depends(get_current_user)):
+    list_team = await user_team_list(user_id=user['user_id'])
+    out = list()
+    for ttt in list_team:
+        out.append(await team_get(ttt['team_id']))
+    return format_records(out, TeamOut)

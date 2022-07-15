@@ -65,7 +65,7 @@ class UserComplex(BaseModel):
 
 class TeamComplex(BaseModel):
     team: TeamOut = Field(None, description='Название команды')
-    master_id: UserOut = Field(None, description='Владелец команды')
+    master: UserOut = Field(None, description='Владелец команды')
     sport: SportOut = Field(None, description='Вид спорта команды')
     users: UserOut = Field(None, description='Участники команды')
 

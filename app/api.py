@@ -5,8 +5,8 @@ from starlette.middleware.cors import CORSMiddleware
 from app.exceptions import CommonException
 from app.services.database import DataBase
 from app.forms.users import router_users
-from app.forms.teams import router_team
 from app.forms.sports import router_sports
+from app.forms.teams import router_team
 from app.forms.news import router_news
 from app.forms.broadcasts import router_broadcasts
 from app.forms.events import router_events
@@ -30,8 +30,8 @@ async def handler_badrequest(requests: Request, exception: CommonException) -> J
 
 
 app.include_router(router_users)
-app.include_router(router_team)
 app.include_router(router_sports)
+app.include_router(router_team)
 app.include_router(router_news)
 app.include_router(router_broadcasts)
 app.include_router(router_events)
