@@ -12,7 +12,7 @@ from app.models.models import UserComplex, UserOut, TeamOut, SportOut, Created, 
 from app.queries.sports import get_sport
 from app.queries.teams import team_get
 from app.queries.users import add_user, get_user, get_username, edit_user, get_user_team, get_user_sports, \
-    get_list_users, user_sport_add, del_user, user_sport_leave, user_team_join, user_team_list
+    get_list_users, user_sport_add, del_user, user_sport_leave, user_team_join, user_team_list, user_team_leave
 from app.user_hash import get_password_hash, verify_password, create_access_token, get_current_user
 from app.utils.utils import format_record, format_records
 
@@ -163,11 +163,21 @@ async def User_Team_Join(
     return Joined()
 
 
-@router_users.get('/user/team/list', response_model=TeamOut)
-async def User_Team_List(
-        user: asyncpg.Record = Depends(get_current_user)):
-    list_team = await user_team_list(user_id=user['user_id'])
-    out = list()
-    for ttt in list_team:
-        out.append(await team_get(ttt['team_id']))
-    return format_records(out, TeamOut)
+# @router_users.get('/user/team/list', response_model=TeamOut)
+# async def User_Team_List(
+#         user: asyncpg.Record = Depends(get_current_user)):
+#     list_team = await user_team_list(user_id=user['user_id'])
+#     out = list()
+#     for ttt in list_team:
+#         out.append(await team_get(ttt['team_id']))
+#     return format_records(out, TeamOut)
+
+
+@router_users.post('/user/team/leave')
+async def User_Team_Leave(
+        user: asyncpg.Record = Depends(get_current_user),
+        team_id: int = Query(..., description='ID команды')):
+    await user_team_leave(user_id=user['user_id'], team_id=team_id)
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={'message': 'Вы успешно вышли из команды'})
