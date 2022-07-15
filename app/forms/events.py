@@ -1,6 +1,6 @@
 from datetime import datetime, date
 
-from fastapi import APIRouter, Form, status, File
+from fastapi import APIRouter, Form, status, File, Query
 from fastapi.responses import JSONResponse
 
 from app.models.models import EventOut
@@ -29,6 +29,6 @@ async def List_of_events():
     return format_records(await events_list(), EventOut)
 
 
-@router_events.get('/event/list', response_model=list[EventOut])
-async def List_of_events_by_datetime(starttime: date = Form(..., description='Начало мероприятия')):
+@router_events.get('/event/list_by', response_model=list[EventOut])
+async def List_of_events_by_datetime(starttime: date = Query(..., description='Начало мероприятия')):
     return format_records(await events_list_by_datetime(starttime), EventOut)

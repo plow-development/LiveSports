@@ -119,9 +119,10 @@ async def get_user_sports(user_id: int) -> list[asyncpg.Record]:
 
 async def get_list_users() -> list[asyncpg.Record]:
     """Возвращает список пользователей из базы данных"""
-    sql = """SELECT id as user_id, username, email, avatar as avatar_url, firstname, lastname, birthday, money
-             FROM users
-             """
+    sql = """
+    SELECT id as user_id, username, email, avatar, firstname, lastname, birthday, money
+    FROM users
+    """
     result = await DataBase.fetch(sql)
     return result
 

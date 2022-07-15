@@ -100,7 +100,7 @@ async def User_Editing(
 @router_users.get('/user/list', response_model=list[UserComplex])
 async def List_of_users():
     """
-    Получение списка пользователей  <br>
+    Получение списка пользователей
     """
     list_users = await get_list_users()
     out_list = list()
