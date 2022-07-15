@@ -29,6 +29,6 @@ async def List_of_events():
     return format_records(await events_list(), EventOut)
 
 
-@router_events.get('/event/list_by', response_model=list[EventOut])
+@router_events.get('/event/list_by_datetime', response_model=list[EventOut])
 async def List_of_events_by_datetime(starttime: date = Query(..., description='Начало мероприятия')):
     return format_records(await events_list_by_datetime(starttime), EventOut)
