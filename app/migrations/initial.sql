@@ -48,11 +48,14 @@ CREATE TABLE news
 
 CREATE TABLE events
 (
-    id        serial PRIMARY KEY,
-    name      TEXT      NOT NULL,
-    starttime TIMESTAMP NOT NULL,
-    latitude  FLOAT     NOT NULL,
-    longitude FLOAT     NOT NULL
+    id          serial    PRIMARY KEY,
+    name        TEXT      NOT NULL,
+    description TEXT      NOT NULL,
+    preview     TEXT      NOT NULL,
+    starttime   TIMESTAMP NOT NULL,
+    latitude    FLOAT     NOT NULL,
+    longitude   FLOAT     NOT NULL,
+    sport_id    integer   NOT NULL
 );
 
 
@@ -100,8 +103,11 @@ ALTER TABLE teams
 
 ALTER TABLE news
     ADD CONSTRAINT news_fk0 FOREIGN KEY (author_id) REFERENCES users (id);
-ALTER TABLE "news"
-    ADD CONSTRAINT "news_fk1" FOREIGN KEY ("sport_id") REFERENCES "sports" ("id");
+ALTER TABLE news
+    ADD CONSTRAINT news_fk1 FOREIGN KEY (sport_id) REFERENCES sports (id);
+
+ALTER TABLE events ADD CONSTRAINT events_fk0 FOREIGN KEY (sport_id) REFERENCES sports(id);
+
 
 ALTER TABLE teams_users
     ADD CONSTRAINT teams_users_fk0 FOREIGN KEY (team_id) REFERENCES teams (id);

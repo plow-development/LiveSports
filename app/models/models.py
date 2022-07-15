@@ -49,9 +49,12 @@ class BroadcastOut(BaseModel):
 class EventOut(BaseModel):
     event_id: int = Field(None)
     name: str = Field(None)
+    description: str = Field(None)
+    preview: str = Field(None)
     starttime: datetime = Field(None)
     latitude: float = Field(None)
     longitude: float = Field(None)
+    sport_id: int = Field(None)
 
 
 class UserComplex(BaseModel):
