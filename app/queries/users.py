@@ -3,7 +3,7 @@ from datetime import date
 import asyncpg
 
 from app.exceptions import BadRequest, NotFound
-from app.queries.teams import get_team
+from app.queries.teams import team_get
 from app.services.database import DataBase
 
 
@@ -101,7 +101,7 @@ async def get_user_team(user_id: int) -> list[asyncpg.Record]:
     team_ids = await DataBase.fetch(sql, user_id)
     teams = list()
     for team_id in team_ids:
-        teams.append(await get_team(team_id))
+        teams.append(await team_get(team_id))
     return teams
 
 

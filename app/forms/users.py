@@ -8,7 +8,7 @@ from pydantic import EmailStr
 
 from app.config import TIMEOUT
 from app.exceptions import BadRequest
-from app.models.models import UserComplex, UserOut, TeamOut, SportOut, Created, Joined, Deleted
+from app.models.models import UserComplex, UserOut, TeamOut, SportOut, Created, Updated, Joined, Deleted
 from app.queries.users import add_user, get_user, get_username, edit_user, get_user_team, get_user_sports, \
     get_list_users, user_sport_add, del_user
 from app.user_hash import get_password_hash, verify_password, create_access_token, get_current_user
@@ -70,7 +70,7 @@ async def User_Info(user: asyncpg.Record = Depends(get_current_user)):
     )
 
 
-@router_users.post('/user/edit')
+@router_users.post('/user/edit', response_model=Updated)
 async def User_Editing(
         user: asyncpg.Record = Depends(get_current_user),
         username: str = Form(None, description='Логин пользователя'),
@@ -79,8 +79,7 @@ async def User_Editing(
         firstname: str = Form(None, description='Имя пользователя'),
         lastname: str = Form(None, description='Фамилия пользователя'),
         birthday: date = Form(None, description='День Рожденья пользователя'),
-        money: int = Form(None, description='Баллы пользователя'),
-) -> JSONResponse:
+        money: int = Form(None, description='Баллы пользователя')):
     """
     Редактирование данных пользователя.  <br>
     Пользователь должен быть авторизован!  <br>
@@ -95,13 +94,11 @@ async def User_Editing(
         birthday=birthday,
         money=money
     )
-    return JSONResponse(
-        status_code=status.HTTP_202_ACCEPTED,
-        content={'message': 'Вы успешно обновили данные пользователя!'})
+    return Updated
 
 
 @router_users.get('/user/list', response_model=list[UserComplex])
-async def List_of_users() -> list[UserComplex]:
+async def List_of_users():
     """
     Получение списка пользователей  <br>
     """

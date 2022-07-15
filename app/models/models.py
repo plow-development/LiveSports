@@ -80,6 +80,10 @@ class Created(BaseModel):
     details: str = Field('Объект успешно создан!', title='Статус операции')
 
 
+class Updated(BaseModel):
+    details: str = Field('Объект успешно обновлён!', title='Статус операции')
+
+
 class Joined(BaseModel):
     details: str = Field('Добавление прошло успешно!', title='Статус операции')
 
