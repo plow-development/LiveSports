@@ -14,6 +14,11 @@ async def add_team(team_name: str, user_id: int, sport_id: int) -> None:
     await DataBase.execute(sql, team_name, user_id, sport_id)
 
 
+async def edit_team_name(team_id: int, team_name: str):
+    sql = """UPDATE teams SET name = ($2) WHERE id = ($1)"""
+    await DataBase.execute(sql, team_id, team_name)
+
+
 async def get_team(team_id: int) -> asyncpg.Record:
     """Получение информации о команде из БД
     :param team_id: ID команды
@@ -29,12 +34,13 @@ async def get_team(team_id: int) -> asyncpg.Record:
 
 
 async def get_list_team() -> list[asyncpg.Record]:
-    """Получение списка команд.
-    Для разработчиков
+    """Получение списка команд
     :return: Список команд (id, name, master_id, sport_id)
     """
-    sql = """SELECT id as team_id, name, master_id, sport_id
-             FROM teams"""
+    sql = """
+    SELECT id as team_id, name, master_id, sport_id
+    FROM teams
+    """
     result = await DataBase.fetch(sql)
     return result
 
@@ -49,8 +55,7 @@ async def get_team_list_user(team_id: int):
 
 
 async def _is_master_(team_id: int, user_id: int) -> None:
-    """Проверяет, является ли пользователь владельцем команды.
-    Для разработки
+    """Проверяет, является ли пользователь владельцем команды
     :param team_id: ID команды
     :param user_id: ID пользователя
     """
