@@ -10,7 +10,7 @@ from app.config import TIMEOUT
 from app.exceptions import BadRequest
 from app.models.models import UserComplex, UserOut, TeamOut, SportOut, Created, Updated, Joined, Deleted
 from app.queries.users import add_user, get_user, get_username, edit_user, get_user_team, get_user_sports, \
-    get_list_users, user_sport_add, del_user
+    get_list_users, user_sport_add, del_user, user_sport_leave
 from app.user_hash import get_password_hash, verify_password, create_access_token, get_current_user
 from app.utils.utils import format_record, format_records
 
@@ -131,6 +131,13 @@ async def User_Sport_Add(
         sport_id=sport_id
     )
     return Joined()
+
+
+@router_users.post('/user/sport/leave')
+async def User_spoer_leave(
+        user: asyncpg.Record = Depends(get_current_user),
+        sport_id: int = Form(..., description='ID вида спорта')):
+    await user_sport_leave(user_id=user['user_id'], sport_id=sport_id)
 
 
 @router_users.delete('/user/del', response_model=Deleted)

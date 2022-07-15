@@ -140,6 +140,15 @@ async def user_sport_add(user_id: int, sport_id: int) -> None:
         raise BadRequest(f'Вы уже выбирали этот вид спорта!') from e
 
 
+async def user_sport_leave(user_id: int, sport_id: int) -> None:
+    sql = """
+    DELETE FROM user_sports
+    WHERE user_id = ($1) and sport_id = ($2)
+    """
+    await DataBase.execute(sql, user_id, sport_id)
+
+
+
 async def user_event_join(user_id: int, event_id: int, user_type: str) -> None:
     """
     Добавляет в БД тип участника на ивенте
