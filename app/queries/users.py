@@ -21,12 +21,13 @@ async def add_user(username: str, hashed_password: str, email: str, avatar: str,
     """
     sql = """
     INSERT INTO users (username, hashed_password, email, avatar, firstname, lastname, birthday, money)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)"""
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    """
     try:
         await DataBase.execute(
             sql, username, hashed_password, email, avatar, firstname, lastname, birthday, money)
     except asyncpg.UniqueViolationError as e:
-        raise BadRequest("Пользователь уже существует!") from e
+        raise BadRequest('Пользователь уже существует!') from e
 
 
 async def get_user(username: str) -> asyncpg.Record:
@@ -40,16 +41,56 @@ async def get_user(username: str) -> asyncpg.Record:
     """
     result = await DataBase.fetchrow(sql, username)
     if not result:
-        raise NotFound("Пользователь не найден!")
+        raise NotFound('Пользователь не найден!')
     return result
 
 
 async def get_username(user_id: int):
+    """Возвращает ID пользователя из БД
+    :param user_id: ID пользователя
+    :return: username пользователя
+    """
     sql = """SELECT username FROM users WHERE id = ($1)"""
     result = await DataBase.fetchval(sql, user_id)
     if not result:
-        raise NotFound("Пользователь не найден!")
+        raise NotFound('Пользователь не найден!')
     return result
+
+
+async def edit_user(
+        user_id: int, username: str = None, email: str = None, avatar: str = None, firstname: str = None,
+        lastname: str = None, birthday: date = None, money: str = None) -> None:
+    user = await get_user(await get_username(user_id))
+    if not username:
+        username = user['username']
+    if not email:
+        email = user['email']
+    if not avatar:
+        avatar = user['avatar']
+    if not firstname:
+        firstname = user['firstname']
+    if not lastname:
+        lastname = user['lastname']
+    if not birthday:
+        birthday = user['birthday']
+    if not money:
+        money = user['money']
+    sql = """
+    UPDATE users
+    SET username = ($1),
+        email = ($2),
+        avatar = ($3),
+        firstname = ($4),
+        lastname = ($5),
+        birthday = ($6),
+        money = ($7)
+    WHERE id = ($8)
+    """
+    try:
+        await DataBase.execute(
+            sql, username, email, avatar, firstname, lastname, birthday, money, user_id)
+    except asyncpg.UniqueViolationError as e:
+        raise BadRequest('Этот псевдоним уже занят!') from e
 
 
 async def get_user_team(user_id: int) -> list[asyncpg.Record]:
